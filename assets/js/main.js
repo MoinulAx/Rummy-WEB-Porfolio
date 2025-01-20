@@ -65,84 +65,129 @@ document.addEventListener("DOMContentLoaded", () => {
     const popupClose = document.getElementById("popupClose");
     const mediumButton = document.getElementById("mediumButton");
     const githubButton = document.getElementById("githubButton");
-    const deploymentButtonContainer = document.createElement("div"); // Create a container for the deployment button
-    const huggingFaceButtonContainer = document.createElement("div"); // Create a container for the Hugging Face button
-  
-    // Iterate through each work item and add the event listener
+    const popupButtons = document.querySelector('.popup__buttons');
+    const scrollIndicator = document.querySelector('.popup__scroll-indicator');
+
+    // Containers for dynamic buttons
+    const frontEndButtonContainer = document.createElement("div");
+    const backEndButtonContainer = document.createElement("div");
+    const deploymentButtonContainer = document.createElement("div");
+
+    const maxDescriptionLength = 150; // Maximum characters before truncating
+
+    // Iterate through each work item
     workItems.forEach(item => {
         item.addEventListener("click", (event) => {
             event.preventDefault();
-  
+
             const title = item.getAttribute("data-title");
             const description = item.getAttribute("data-description");
             const image = item.getAttribute("data-image");
             const mediumLink = item.getAttribute("data-medium-link");
-            const githubLink = item.getAttribute("data-github-link");
-            const huggingfaceLink = item.getAttribute("data-huggingface-link");
+            const frontEndLink = item.getAttribute("data-frontend-link");
+            const backEndLink = item.getAttribute("data-backend-link");
             const deploymentLink = item.getAttribute("data-deployment-link");
-  
+
             // Set the popup content
             popupTitle.textContent = title;
-            popupDescription.textContent = description;
             popupImage.src = image;
-  
-            // Set the Medium button link
-            mediumButton.href = mediumLink;
-  
-            // Handle GitHub Button
-            if (githubLink) {
-                githubButton.style.display = "inline-block"; // Make GitHub button visible
-                githubButton.href = githubLink; // Correctly set the GitHub link
-            }
-  
-            // Handle Hugging Face Button
-            if (huggingfaceLink) {
-                githubButton.style.display = "none"; // Hide GitHub button
-                // Create Hugging Face button dynamically
-                const huggingFaceButton = document.createElement('a');
-                huggingFaceButton.href = huggingfaceLink;
-                huggingFaceButton.target = "_blank";
-                huggingFaceButton.classList.add("popup__button");
-                huggingFaceButton.textContent = "View on Hugging Face";
-                huggingFaceButtonContainer.innerHTML = ''; // Clear previous content
-                huggingFaceButtonContainer.appendChild(huggingFaceButton);
-                document.querySelector('.popup__buttons').appendChild(huggingFaceButtonContainer);
+
+            // Handle description truncation
+            if (description.length > maxDescriptionLength) {
+                const truncatedDescription = description.substring(0, maxDescriptionLength) + "...";
+                popupDescription.innerHTML = truncatedDescription;
+
+                const readMoreLink = document.createElement("span");
+                readMoreLink.textContent = " Read More";
+                readMoreLink.style.color = "#0073e6";
+                readMoreLink.style.cursor = "pointer";
+
+                readMoreLink.addEventListener("click", () => {
+                    popupDescription.textContent = description; // Show full description
+                    readMoreLink.style.display = "none"; // Hide "Read More" link
+                });
+
+                popupDescription.appendChild(readMoreLink);
             } else {
-                huggingFaceButtonContainer.innerHTML = ''; // Clear Hugging Face button if not available
+                popupDescription.textContent = description; // Show full description if not truncated
             }
-  
-            // Handle Deployment Button for Rummy Shoots
+
+            // Medium Button
+            mediumButton.style.display = mediumLink ? "inline-block" : "none";
+            mediumButton.href = mediumLink || "#";
+
+            // Front-End Button
+            frontEndButtonContainer.innerHTML = ""; // Clear old content
+            if (frontEndLink) {
+                const frontEndButton = document.createElement('a');
+                frontEndButton.href = frontEndLink;
+                frontEndButton.target = "_blank";
+                frontEndButton.classList.add("popup__button");
+                frontEndButton.textContent = "View Front-End Code";
+                frontEndButtonContainer.appendChild(frontEndButton);
+                popupButtons.appendChild(frontEndButtonContainer);
+            }
+
+            // Back-End Button
+            backEndButtonContainer.innerHTML = ""; // Clear old content
+            if (backEndLink) {
+                const backEndButton = document.createElement('a');
+                backEndButton.href = backEndLink;
+                backEndButton.target = "_blank";
+                backEndButton.classList.add("popup__button");
+                backEndButton.textContent = "View Back-End Code";
+                backEndButtonContainer.appendChild(backEndButton);
+                popupButtons.appendChild(backEndButtonContainer);
+            }
+
+            // Deployment Button
+            deploymentButtonContainer.innerHTML = ""; // Clear old content
             if (deploymentLink) {
                 const deploymentButton = document.createElement('a');
                 deploymentButton.href = deploymentLink;
                 deploymentButton.target = "_blank";
                 deploymentButton.classList.add("popup__button");
                 deploymentButton.textContent = "View Deployment";
-                deploymentButtonContainer.innerHTML = ''; // Clear previous content
                 deploymentButtonContainer.appendChild(deploymentButton);
-                document.querySelector('.popup__buttons').appendChild(deploymentButtonContainer);
-            } else {
-                deploymentButtonContainer.innerHTML = ''; // Remove Deployment button if not available
+                popupButtons.appendChild(deploymentButtonContainer);
             }
-  
-            // Show the popup
+
+            // Show popup
             popup.style.display = "flex";
-            document.body.style.overflow = "hidden"; // Prevent scrolling when popup is open
+            document.body.style.overflow = "hidden";
+
+            // Mobile-specific behavior
+            if (window.innerWidth <= 768) {
+                // Make the description scrollable on mobile if it overflows
+                if (popupDescription.scrollHeight > popupDescription.clientHeight) {
+                    popupDescription.style.maxHeight = "120px";
+                    popupDescription.style.overflowY = "auto";
+                    scrollIndicator.style.display = "block"; // Show scroll indicator
+                } else {
+                    scrollIndicator.style.display = "none"; // Hide scroll indicator
+                }
+
+                // Make buttons scrollable if more than 2 buttons
+                if (popupButtons.children.length > 2) {
+                    popupButtons.style.overflowY = "auto";
+                    popupButtons.style.maxHeight = "150px";
+                    scrollIndicator.style.display = "block"; // Show scroll indicator for buttons
+                }
+            }
         });
     });
-  
-    // Close the popup when the close button is clicked
+
+    // Close popup
     popupClose.addEventListener("click", () => {
         popup.style.display = "none";
-        document.body.style.overflow = "auto"; // Re-enable scrolling
+        document.body.style.overflow = "auto";
     });
-  
-    // Close the popup when clicking outside the content area
+
+    // Close popup on outside click
     window.addEventListener("click", (event) => {
         if (event.target === popup) {
             popup.style.display = "none";
             document.body.style.overflow = "auto";
         }
     });
-  });
-  
+});

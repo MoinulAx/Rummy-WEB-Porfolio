@@ -437,6 +437,78 @@ img {
   background-color: #004b8e;
 }
 
+/* Media Query for Smaller Screens (Mobile) */
+@media screen and (max-width: 768px) {
+  .popup__content {
+    padding: 15px;
+    width: 95%;
+    max-width: 400px;
+  }
+
+  .popup__close {
+    top: 5px;
+    right: 10px;
+    font-size: 36px;
+  }
+
+  /* Scrollable description on mobile */
+  .popup__description {
+    max-height: 120px; /* Adjust height to make it scrollable */
+    overflow-y: auto;
+    position: relative;
+  }
+
+  .popup__description::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  .popup__description::-webkit-scrollbar-thumb {
+    background-color: #0073e6;
+    border-radius: 5px;
+  }
+
+  .popup__description::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+
+  /* Scroll indicator for mobile */
+  .popup__scroll-indicator {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    width: 20px;
+    height: 20px;
+    background: url('path/to/scroll-arrow.png') no-repeat center center;
+    background-size: contain;
+    opacity: 0.7;
+    cursor: pointer;
+    display: none; /* Initially hidden */
+  }
+
+  /* Using grid layout for buttons */
+  .popup__buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two buttons per row */
+    gap: 10px; /* Space between buttons */
+    max-height: 300px; /* Set a max-height to control the scrollable area */
+    overflow-y: auto; /* Enables scrolling if buttons overflow */
+    padding-right: 10px;
+    text-align: center;
+  }
+
+  .popup__button {
+    margin: 5px;
+    width: auto; /* Buttons will auto-size */
+    text-align: center;
+  }
+
+  /* If there are more than 2 buttons, make them scrollable */
+  .popup__buttons {
+    flex-wrap: nowrap; /* Prevent buttons from wrapping */
+  }
+}
+
+
 
 /* ===== CONTACT =====*/
 .contact__input {
