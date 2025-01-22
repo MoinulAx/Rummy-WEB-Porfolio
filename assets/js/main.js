@@ -65,13 +65,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const popupClose = document.getElementById("popupClose");
     const mediumButton = document.getElementById("mediumButton");
     const githubButton = document.getElementById("githubButton");
+    const huggingfaceButtonContainer = document.createElement("div"); // New container for Hugging Face button
     const popupButtons = document.querySelector('.popup__buttons');
     const scrollIndicator = document.querySelector('.popup__scroll-indicator');
-
-    // Containers for dynamic buttons
-    const frontEndButtonContainer = document.createElement("div");
-    const backEndButtonContainer = document.createElement("div");
-    const deploymentButtonContainer = document.createElement("div");
 
     const maxDescriptionLength = 150; // Maximum characters before truncating
 
@@ -84,6 +80,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const description = item.getAttribute("data-description");
             const image = item.getAttribute("data-image");
             const mediumLink = item.getAttribute("data-medium-link");
+            const huggingfaceLink = item.getAttribute("data-huggingface-link");
             const frontEndLink = item.getAttribute("data-frontend-link");
             const backEndLink = item.getAttribute("data-backend-link");
             const deploymentLink = item.getAttribute("data-deployment-link");
@@ -112,55 +109,72 @@ document.addEventListener("DOMContentLoaded", () => {
                 popupDescription.textContent = description; // Show full description if not truncated
             }
 
+            // Clear previous buttons
+            popupButtons.innerHTML = ""; // Clear all existing buttons
+
             // Medium Button
-            mediumButton.style.display = mediumLink ? "inline-block" : "none";
-            mediumButton.href = mediumLink || "#";
+            if (mediumLink) {
+                mediumButton.style.display = "inline-block";
+                mediumButton.href = mediumLink;
+                popupButtons.appendChild(mediumButton);
+            } else {
+                mediumButton.style.display = "none"; // Hide if no Medium link
+            }
+
+            // Hugging Face Button
+            if (huggingfaceLink) {
+                const huggingfaceButton = document.createElement('a');
+                huggingfaceButton.href = huggingfaceLink;
+                huggingfaceButton.target = "_blank";
+                huggingfaceButton.rel = "noopener noreferrer";
+                huggingfaceButton.classList.add("popup__button");
+                huggingfaceButton.textContent = "View on Hugging Face";
+                huggingfaceButtonContainer.innerHTML = ""; // Clear previous Hugging Face content
+                huggingfaceButtonContainer.appendChild(huggingfaceButton);
+                popupButtons.appendChild(huggingfaceButtonContainer);
+            }
 
             // Front-End Button
-            frontEndButtonContainer.innerHTML = ""; // Clear old content
             if (frontEndLink) {
                 const frontEndButton = document.createElement('a');
                 frontEndButton.href = frontEndLink;
                 frontEndButton.target = "_blank";
-                frontEndButton.rel = "noopener noreferrer"; // Security improvement
+                frontEndButton.rel = "noopener noreferrer";
                 frontEndButton.classList.add("popup__button");
                 frontEndButton.textContent = "View Front-End Code";
-                frontEndButtonContainer.appendChild(frontEndButton);
-                popupButtons.appendChild(frontEndButtonContainer);
+                popupButtons.appendChild(frontEndButton);
             }
 
             // Back-End Button
-            backEndButtonContainer.innerHTML = ""; // Clear old content
             if (backEndLink) {
                 const backEndButton = document.createElement('a');
                 backEndButton.href = backEndLink;
                 backEndButton.target = "_blank";
-                backEndButton.rel = "noopener noreferrer"; // Security improvement
+                backEndButton.rel = "noopener noreferrer";
                 backEndButton.classList.add("popup__button");
                 backEndButton.textContent = "View Back-End Code";
-                backEndButtonContainer.appendChild(backEndButton);
-                popupButtons.appendChild(backEndButtonContainer);
+                popupButtons.appendChild(backEndButton);
             }
 
             // Deployment Button
-            deploymentButtonContainer.innerHTML = ""; // Clear old content
             if (deploymentLink) {
                 const deploymentButton = document.createElement('a');
                 deploymentButton.href = deploymentLink;
                 deploymentButton.target = "_blank";
-                deploymentButton.rel = "noopener noreferrer"; // Security improvement
+                deploymentButton.rel = "noopener noreferrer";
                 deploymentButton.classList.add("popup__button");
                 deploymentButton.textContent = "View Deployment";
-                deploymentButtonContainer.appendChild(deploymentButton);
-                popupButtons.appendChild(deploymentButtonContainer);
+                popupButtons.appendChild(deploymentButton);
             }
 
-            // GitHub Button: Only show if no Front-End or Back-End button
-            if (!frontEndLink && !backEndLink) {
-                githubButton.style.display = "inline-block"; // Show GitHub button
-                githubButton.href = item.getAttribute("data-github-link") || "#";
+            // GitHub Button: Only show if no Front-End or Back-End button and if GitHub link is present
+            const githubLink = item.getAttribute("data-github-link");
+            if ((!frontEndLink && !backEndLink) && githubLink) {
+                githubButton.style.display = "inline-block";
+                githubButton.href = githubLink;
+                popupButtons.appendChild(githubButton);
             } else {
-                githubButton.style.display = "none"; // Hide GitHub button if front-end or back-end is present
+                githubButton.style.display = "none"; // Hide GitHub button if front-end or back-end is present or GitHub link is missing
             }
 
             // Show popup
@@ -202,4 +216,3 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 });
-
