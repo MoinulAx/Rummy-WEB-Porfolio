@@ -122,6 +122,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const frontEndButton = document.createElement('a');
                 frontEndButton.href = frontEndLink;
                 frontEndButton.target = "_blank";
+                frontEndButton.rel = "noopener noreferrer"; // Security improvement
                 frontEndButton.classList.add("popup__button");
                 frontEndButton.textContent = "View Front-End Code";
                 frontEndButtonContainer.appendChild(frontEndButton);
@@ -134,6 +135,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const backEndButton = document.createElement('a');
                 backEndButton.href = backEndLink;
                 backEndButton.target = "_blank";
+                backEndButton.rel = "noopener noreferrer"; // Security improvement
                 backEndButton.classList.add("popup__button");
                 backEndButton.textContent = "View Back-End Code";
                 backEndButtonContainer.appendChild(backEndButton);
@@ -146,10 +148,19 @@ document.addEventListener("DOMContentLoaded", () => {
                 const deploymentButton = document.createElement('a');
                 deploymentButton.href = deploymentLink;
                 deploymentButton.target = "_blank";
+                deploymentButton.rel = "noopener noreferrer"; // Security improvement
                 deploymentButton.classList.add("popup__button");
                 deploymentButton.textContent = "View Deployment";
                 deploymentButtonContainer.appendChild(deploymentButton);
                 popupButtons.appendChild(deploymentButtonContainer);
+            }
+
+            // GitHub Button: Only show if no Front-End or Back-End button
+            if (!frontEndLink && !backEndLink) {
+                githubButton.style.display = "inline-block"; // Show GitHub button
+                githubButton.href = item.getAttribute("data-github-link") || "#";
+            } else {
+                githubButton.style.display = "none"; // Hide GitHub button if front-end or back-end is present
             }
 
             // Show popup
@@ -191,3 +202,4 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 });
+
