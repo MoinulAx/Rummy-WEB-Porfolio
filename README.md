@@ -31,7 +31,7 @@ Welcome to the repository for my personal portfolio website! This site showcases
   - HTML5
   - CSS3 (with Flexbox and Grid)
   - JavaScript (ES6+)
-  - React.js
+  - Jquery 
 
 - **Deployment**:
   - Netlify
