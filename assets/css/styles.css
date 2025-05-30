@@ -322,8 +322,8 @@ img {
   width: 80%; /* SQL skill level */
 }
 
-.skills__jinja {
-  width: 85%; /* Jinja skill level */
+.skills__java {   
+  width: 75%; /* Java skill level */
 }
 
 .skills__express {
