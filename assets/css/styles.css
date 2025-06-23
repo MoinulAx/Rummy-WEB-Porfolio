@@ -658,6 +658,16 @@ img {
   .footer__title {
     font-size: 1.5rem;
   }
+  .about__img-rounded {
+    border-radius: 12%; /* Makes the image perfectly circular */
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2); /* Add a soft shadow */
+    width: 300px; /* Set a fixed width */
+    height: 350px; /* Set the same height as the width */
+    object-fit: cover; /* Ensures the image scales properly within the circle */
+    margin: 0 auto; /* Center the image */
+    display: block; /* Ensures proper centering */
+    margin-bottom: 10px; /* Add some space below the image */
+}
 }
 
 
@@ -670,6 +680,7 @@ img {
   .home__img {
     width: 200px;
   }
+ 
 }
 @media screen and (min-width: 576px) {
   .home {
@@ -695,6 +706,15 @@ img {
     align-items: center;
     text-align: initial;
   }
+  .about__img-rounded {
+    border-radius: 12%; /* Makes the image perfectly circular */
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2); /* Add a soft shadow */
+    width: 200px; /* Set a fixed width */
+    height: 400px; /* Set the same height as the width */
+    object-fit: cover; /* Ensures the image scales properly within the circle */
+    margin: 0 auto; /* Center the image */
+    display: block; /* Ensures proper centering */
+}
   .skills__container {
     grid-template-columns: 0.7fr;
     justify-content: center;
