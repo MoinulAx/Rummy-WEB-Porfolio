@@ -366,6 +366,26 @@ img {
   vertical-align: middle;
 }
 
+
+
+/* ===== RUMMSPACE ===== */
+.rummspace__container {
+  max-width: 720px;
+  text-align: center;
+}
+
+.rummspace__role {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: var(--mb-2);
+  color: var(--second-color);
+}
+
+.rummspace__text p {
+  margin-bottom: var(--mb-2);
+  line-height: 1.7;
+}
+
 /* ===== WORK =====*/
 .work__container {
   row-gap: 2rem;
